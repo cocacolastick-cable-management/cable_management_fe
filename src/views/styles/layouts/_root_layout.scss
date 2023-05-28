@@ -2,5 +2,10 @@
 {
    .root-layout
    {
+      @apply
+         min-h-screen
+         bg-blue-1000
+         text-blue-50
+      ;
    }
 }
