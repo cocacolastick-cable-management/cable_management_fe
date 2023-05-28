@@ -1,0 +1,17 @@
+@layer components {
+   .logo
+   {
+      &--primary
+      {
+         @apply
+         text-2xl font-black text-sky-200
+         ;
+      }
+      &--secondary
+      {
+         @apply
+            text-xs text-gray-300
+         ;
+      }
+   }
+}
