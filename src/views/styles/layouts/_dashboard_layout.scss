@@ -1,0 +1,73 @@
+@layer base
+{
+   .dashboard-layout
+   {
+
+   }
+}
+
+@layer components
+{
+   .page-header
+   {
+      @apply
+         flex items-center justify-between
+         border-b-[1px] border-b-slate-700
+         mt-8 pb-5
+      ;
+      &--right
+      {
+         @apply
+            flex items-center
+         ;
+         &__line
+         {
+            @apply
+               w-[1px] h-[40px]
+               ml-8 mr-5
+               bg-slate-700
+            ;
+         }
+      }
+   }
+}
+
+@layer components {
+   .user-info
+   {
+      @apply
+         flex flex-col gap-0.5 items-end
+      ;
+      &--top
+      {
+         @apply
+            flex items-center gap-3
+         ;
+         &__name
+         {
+            @apply
+               font-bold
+            ;
+         }
+         &__role
+         {
+            @apply
+               font-bold text-lg
+            ;
+         }
+      }
+      &__email
+      {
+         @apply
+            text-gray-400 text-sm
+         ;
+      }
+   }
+}
+
+@layer components {
+   .header-menu
+   {
+
+   }
+}
