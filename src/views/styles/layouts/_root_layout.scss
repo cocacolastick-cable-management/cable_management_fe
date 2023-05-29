@@ -3,9 +3,18 @@
    .root-layout
    {
       @apply
+         flex flex-col
          min-h-screen
-         bg-blue-1000
+         bg-slate-900
          text-blue-50
       ;
+
+      &--inner
+      {
+         @apply
+            w-2/3 min-w-[1200px] max-w-[1800px]
+            self-center
+         ;
+      }
    }
 }
