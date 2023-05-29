@@ -1,11 +1,22 @@
 import {Outlet} from "react-router-dom"
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+
+const theme = createTheme({
+   palette: {
+      mode: 'dark',
+   },
+});
 
 function RootLayout()
 {
    return (
-      <div className={"root-layout"}>
-         <Outlet/>
-      </div>
+      <ThemeProvider theme={theme}>
+         <div className={"root-layout"}>
+            <div className={"root-layout--inner"}>
+               <Outlet/>
+            </div>
+         </div>
+      </ThemeProvider>
    )
 }
 
