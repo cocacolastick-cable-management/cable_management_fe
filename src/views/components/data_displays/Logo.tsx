@@ -2,7 +2,7 @@ function Logo()
 {
    return (
       <article  className={"logo"}>
-         <h1 className={"logo--primary"}>HalloHolla.com</h1>
+         <h1 className={"logo--primary"}>HalloHolla</h1>
          <p className={"logo--secondary"}>Cable Management</p>
       </article>
    )
