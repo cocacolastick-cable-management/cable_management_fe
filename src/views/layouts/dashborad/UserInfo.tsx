@@ -8,7 +8,7 @@ function UserInfo()
             <p className={"user-info--top__name"}>Vu Planner</p>
             <Chip
                className={"user-info--top__role"} label="Admin"
-               color={"info"} variant="outlined" size={"small"}
+               color={"primary"} variant="outlined" size={"small"}
             />
          </div>
          <p className={"user-info__email"}>vuphamlethanh@gmail.com</p>
