@@ -1,0 +1,77 @@
+@layer components
+{
+   .admin-dashboard-page
+   {
+      &__header
+      {
+         @apply
+         border-x-[1px] border-b-[1px] border-x-slate-700 border-b-slate-700
+         flex items-center
+         px-3 py-2
+         ;
+         &__title
+         {
+            @apply text-base uppercase font-bold;
+         }
+         & .yess
+         {
+
+         }
+      }
+      &__body
+      {
+         @apply grid grid-cols-[320px_1fr];
+
+         & .side-bar-preview
+         {
+            @apply
+               flex flex-col items-center justify-center
+               border-x-[1px] border-x-slate-700
+               p-3
+            ;
+         }
+
+         & .account-table
+         {
+            @apply h-[700px] flex;
+
+            & .tool-bar
+            {
+               @apply flex justify-between p-2;
+
+               &--left
+               {
+                  @apply flex gap-2;
+               }
+            }
+         }
+
+         & .account-table > .MuiDataGrid-root
+         {
+            &.css-244zml-MuiDataGrid-root
+            {
+               @apply
+               outline-0
+               border-0 border-r-[1px] border-r-slate-700
+               rounded-none
+               ;
+            }
+
+            & .MuiDataGrid-withBorderColor
+            {
+               @apply border-b-[1px] border-b-slate-700 ;
+            }
+
+            & .MuiDataGrid-columnHeaders
+            {
+               @apply border-t-[1px] border-t-slate-700 ;
+            }
+
+            & .MuiDataGrid-footerContainer
+            {
+               @apply border-t-[1px] border-t-slate-700;
+            }
+         }
+      }
+   }
+}
