@@ -1,0 +1,28 @@
+@layer components
+{
+   .sign-in-page
+   {
+      @apply flex flex-col items-center justify-center min-h-screen;
+      &--inner
+      {
+         @apply
+            w-[350px] ;
+      }
+      &__header
+      {
+         @apply flex justify-between mb-8 items-end;
+         &__title
+         {
+            @apply text-3xl capitalize font-black ;
+         }
+      }
+   }
+}
+
+@layer components
+{
+   .sign-in-form
+   {
+      @apply flex flex-col gap-8;
+   }
+}
