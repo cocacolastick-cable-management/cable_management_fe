@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {DataGrid, GridColDef, GridRowsProp} from '@mui/x-data-grid'
-import ToolBar from "./AccountTableToolBar"
+import AccountTableToolBar from "./AccountTableToolBar"
 import { v4 as uuidv4 } from 'uuid';
 
 const rows: GridRowsProp = [
@@ -24,7 +24,7 @@ function AccountTable()
 {
    return (
       <div className={"account-table"}>
-         <DataGrid density={"standard"} rows={rows} columns={columns} slots={{ toolbar: ToolBar }}/>
+         <DataGrid density={"standard"} rows={rows} columns={columns} slots={{ toolbar: AccountTableToolBar }}/>
       </div>
    );
 }
