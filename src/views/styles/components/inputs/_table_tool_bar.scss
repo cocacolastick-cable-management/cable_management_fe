@@ -1,0 +1,14 @@
+@layer components
+{
+   .tool-bar
+   {
+      &.MuiDataGrid-toolbarContainer
+      {
+         @apply flex justify-between p-2;
+      }
+      &--left
+      {
+         @apply flex gap-2;
+      }
+   }
+}

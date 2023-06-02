@@ -24,28 +24,43 @@
 
          & .side-bar-preview
          {
-            @apply
-               flex flex-col items-center justify-center
-               border-x-[1px] border-x-slate-700
-               p-3
-            ;
+            @apply border-x-[1px] border-x-slate-700 p-3 flex items-center ;
+            &--empty
+            {
+               @apply flex flex-col items-center justify-center w-full h-full;
+            }
+
+            &__user
+            {
+               @apply p-3;
+               &--primary
+               {
+                  @apply flex items-center gap-3 mb-1;
+               }
+               &--secondary
+               {
+                  @apply text-gray-400 mb-5;
+               }
+               &--tertiary
+               {
+               }
+               &__name
+               {
+                  @apply text-xl font-bold;
+               }
+               &__role
+               {
+                  @apply font-bold;
+               }
+            }
          }
 
          & .account-table
          {
             @apply h-[700px] flex;
-
-            & .tool-bar
-            {
-               @apply flex justify-between p-2;
-
-               &--left
-               {
-                  @apply flex gap-2;
-               }
-            }
          }
 
+         //TODO: this should be a mixin
          & .account-table > .MuiDataGrid-root
          {
             &.css-244zml-MuiDataGrid-root

@@ -4,8 +4,11 @@
 
 @import "layouts/root_layout";
 @import "layouts/dashboard_layout";
+@import "layouts/table_layout";
 
 @import "components/data_displays/logo";
+@import "components/inputs/table_tool_bar";
 
 @import "pages/admin_dashboard";
 @import "pages/sign_in";
+@import "pages/planner_dashboard";

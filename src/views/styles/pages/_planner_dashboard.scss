@@ -1,0 +1,73 @@
+@layer components
+{
+   .with-draw-table
+   {
+      @apply h-[670px] flex;
+
+      //TODO: should be a mixin
+      & > .MuiDataGrid-root
+      {
+         &.css-244zml-MuiDataGrid-root
+         {
+            @apply
+            outline-0
+            border-0 border-r-[1px] border-r-slate-700
+            rounded-none
+            ;
+         }
+
+         & .MuiDataGrid-withBorderColor
+         {
+            @apply border-b-[1px] border-b-slate-700 ;
+         }
+
+         & .MuiDataGrid-columnHeaders
+         {
+            @apply border-t-[1px] border-t-slate-700 ;
+         }
+
+         & .MuiDataGrid-footerContainer
+         {
+            @apply border-t-[1px] border-t-slate-700;
+         }
+      }
+   }
+
+   .notif-section
+   {
+      @apply h-[670px] ;
+   }
+
+   .contract-table
+   {
+      @apply h-[670px] flex;
+
+      //TODO: should be a mixin
+      & > .MuiDataGrid-root
+      {
+         &.css-244zml-MuiDataGrid-root
+         {
+            @apply
+            outline-0
+            border-0 border-r-[1px] border-r-slate-700
+            rounded-none
+            ;
+         }
+
+         & .MuiDataGrid-withBorderColor
+         {
+            @apply border-b-[1px] border-b-slate-700 ;
+         }
+
+         & .MuiDataGrid-columnHeaders
+         {
+            @apply border-t-[1px] border-t-slate-700 ;
+         }
+
+         & .MuiDataGrid-footerContainer
+         {
+            @apply border-t-[1px] border-t-slate-700;
+         }
+      }
+   }
+}

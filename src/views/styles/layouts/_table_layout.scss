@@ -1,0 +1,100 @@
+@layer components
+{
+   .table-layout
+   {
+      &__header
+      {
+         @apply
+            border-x-[1px] border-b-[1px] border-x-slate-700 border-b-slate-700
+            flex items-center
+            px-3 py-2 overflow-hidden;
+         &__title
+         {
+            @apply text-base uppercase font-bold;
+         }
+      }
+      &__body
+      {
+         @apply grid grid-cols-[370px_1fr];
+
+         &--main
+         {
+            @apply overflow-hidden;
+         }
+
+         & .side-bar-preview
+         {
+            @apply border-x-[1px] border-x-slate-700 p-3 flex items-center ;
+            &--empty
+            {
+               @apply flex flex-col items-center justify-center w-full h-full;
+            }
+
+            &__user
+            {
+               @apply p-3;
+               &--primary
+               {
+                  @apply flex items-center gap-3 mb-1;
+               }
+               &--secondary
+               {
+                  @apply text-gray-400 mb-5;
+               }
+               &--tertiary
+               {
+               }
+               &__name
+               {
+                  @apply text-xl font-bold;
+               }
+               &__role
+               {
+                  @apply font-bold;
+               }
+            }
+         }
+
+         //& .account-table
+         //{
+         //   @apply h-[700px] flex;
+         //
+         //   & .tool-bar
+         //   {
+         //      @apply flex justify-between p-2;
+         //      &--left
+         //      {
+         //         @apply flex gap-2;
+         //      }
+         //   }
+         //}
+         //
+         //& .account-table > .MuiDataGrid-root
+         //{
+         //   &.css-244zml-MuiDataGrid-root
+         //   {
+         //      @apply
+         //      outline-0
+         //      border-0 border-r-[1px] border-r-slate-700
+         //      rounded-none
+         //      ;
+         //   }
+         //
+         //   & .MuiDataGrid-withBorderColor
+         //   {
+         //      @apply border-b-[1px] border-b-slate-700 ;
+         //   }
+         //
+         //   & .MuiDataGrid-columnHeaders
+         //   {
+         //      @apply border-t-[1px] border-t-slate-700 ;
+         //   }
+         //
+         //   & .MuiDataGrid-footerContainer
+         //   {
+         //      @apply border-t-[1px] border-t-slate-700;
+         //   }
+         //}
+      }
+   }
+}
