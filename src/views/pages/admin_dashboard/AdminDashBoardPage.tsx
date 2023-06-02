@@ -1,5 +1,5 @@
 import SideBarPreview from "./SideBarPreview"
-import AccountTable from "./AccountTable"
+import UserTable from "./UserTable"
 import {IconButton} from "@mui/material"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 
@@ -13,7 +13,7 @@ function AdminDashBoardPage()
          </header>
          <div className={"admin-dashboard-page__body"}>
             <SideBarPreview/>
-            <AccountTable/>
+            <UserTable/>
          </div>
       </section>
    )
