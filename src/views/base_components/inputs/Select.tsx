@@ -13,6 +13,9 @@ type SelectProps = {
    name?: string
    id?: string
    error?: boolean
+   fullWidth?: boolean
+   className?: string
+   margin?: "normal" | "dense" | "none"
 }
 
 type SelectOptionType = {
@@ -23,9 +26,10 @@ type SelectOptionType = {
 function Select(props: SelectProps)
 {
    return (
-      <FormControl error={props.error}>
-         <InputLabel required={props.required} id="demo-simple-select-label">{props.label}</InputLabel>
+      <FormControl margin={props.margin} className={props.className} fullWidth={props.fullWidth} error={props.error}>
+         <InputLabel required={props.required}>{props.label}</InputLabel>
          <MuiSelect
+            fullWidth={props.fullWidth}
             name={props.name}
             id={props.id}
             value={props.value ?? ""}
