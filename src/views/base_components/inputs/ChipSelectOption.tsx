@@ -1,10 +1,10 @@
 import {Chip, MenuItem} from "@mui/material"
-import {Color} from "../../../types"
+import {ColorType} from "../../../types"
 
 type ChipSelectOptionProps = {
    key: any,
    value?: any,
-   chipColor?: Color
+   chipColor?: ColorType
 }
 
 // TODO: why this shit does not work???
