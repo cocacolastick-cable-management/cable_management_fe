@@ -1,22 +1,49 @@
-import {Color} from "../types";
+import {ColorType} from "../types";
 
 const Roles = Object.freeze({
-   admin: {
+   "admin": {
       value: "admin",
-      color: "info"  as Color
+      color: "info"  as ColorType,
+      mainRoute: "/admin/dashboard"
    },
-   planner: {
+   "planner": {
       value: "planner",
-      color: "primary" as Color
+      color: "primary" as ColorType,
+      mainRoute: "/planner/dashboard"
    },
-   supplier: {
+   "supplier": {
       value: "supplier",
-      color: "success" as Color
+      color: "success" as ColorType,
+      mainRoute: "/supplier/dashboard"
    },
-   contractor: {
+   "contractor": {
       value: "contractor",
-      color: "secondary" as Color
+      color: "secondary" as ColorType,
+      mainRoute: "/contractor/dashboard"
    },
 })
+
+// const Roles = new Map([
+//    ["admin", {
+//       value: "admin",
+//       color: "info"  as Color,
+//       mainRoute: "/admin/dashboard"
+//    }],
+//    ["planner", {
+//       value: "planner",
+//       color: "primary" as Color,
+//       mainRoute: "/planner/dashboard"
+//    }],
+//    ["supplier", {
+//       value: "supplier",
+//       color: "success" as Color,
+//       mainRoute: "/supplier/dashboard"
+//    }],
+//    ["contractor", {
+//       value: "contractor",
+//       color: "secondary" as Color,
+//       mainRoute: "/contractor/dashboard"
+//    }]
+// ])
 
 export default Roles
