@@ -1,5 +1,7 @@
-import Color from "./Color"
+import ColorType from "./ColorType"
+import RoleType from "./RoleType";
 
 export {
-   type Color
+   type ColorType,
+   type RoleType
 }
