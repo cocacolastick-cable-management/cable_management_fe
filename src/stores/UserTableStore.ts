@@ -16,7 +16,7 @@ const initialState: UserTableStateType = {
 
 const fetchUserList = createAsyncThunk("UserTableSlice/fetchUserList", async () => {
    try {
-      const res = await MyAxios.get("/admin/users")
+      const res = await MyAxios.get("/common/users")
       return res.data.Payload as UserResponse[]
    } catch (err) {
       console.error(err)

@@ -24,7 +24,7 @@ function SignInForm()
       validateOnChange: false,
       validateOnBlur: true,
       onSubmit: values => {
-         MyAxios.post("/sign-in", values)
+         MyAxios.post("/common/sign-in", values)
             .then((res) => {
                dispatch(setAuthData(res.data.Payload as AuthResponse))
                navigate(Roles[values.Role as keyof typeof Roles].mainRoute, {replace: true})
