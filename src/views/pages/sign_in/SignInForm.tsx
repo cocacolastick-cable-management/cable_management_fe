@@ -1,12 +1,19 @@
 import {Button, TextField, Chip, MenuItem, SelectChangeEvent} from "@mui/material"
 import {Select} from "../../base_components"
 import {Roles} from "../../../constants"
-import {useCallback, ChangeEvent} from "react"
+import {ChangeEvent} from "react"
+import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik"
-import {SignInRequest, SignInRequestValidation} from "../../../api_schema"
+import {AuthResponse, SignInRequest, SignInRequestValidation} from "../../../api_schema"
+import {MyAxios} from "../../../infrastructures"
+import {setAuthData} from "../../../stores/AuthStore";
+import {useDispatch} from "react-redux";
 
 function SignInForm()
 {
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
+
    const form = useFormik<SignInRequest>({
       initialValues: {
          Role: "",
@@ -17,22 +24,25 @@ function SignInForm()
       validateOnChange: false,
       validateOnBlur: true,
       onSubmit: values => {
-         // TODO call sign-in api then set AuthSlice
-         console.log(values)
+         MyAxios.post("/sign-in", values)
+            .then((res) => {
+               dispatch(setAuthData(res.data.Payload as AuthResponse))
+               navigate(Roles[values.Role as keyof typeof Roles].mainRoute, {replace: true})
+            })
+            .catch((err) => {
+               switch (err.response.status) {
+                  case 401:
+                     form.setFieldError("Email", "Authenticate Failed")
+                     form.setFieldError("Password", "Authenticate Failed")
+                     break
+                  case 403:
+                     form.setFieldError("Role", "You have been blocked")
+                     break
+               }
+            })
       }
    })
    const { values, touched, errors, handleSubmit, handleBlur } = form;
-
-   const renderRoleSelect = useCallback(() => {
-      return roleSelectData.map((option, index) => (
-         <MenuItem key={index} value={option.value}>
-            <Chip
-               className={"user-info--top__role"} label={option.value}
-               color={option.color} variant="outlined" size={"small"}
-            />
-         </MenuItem>
-      ))
-   }, [])
 
    const handleInputChange = (e: ChangeEvent<any> | SelectChangeEvent) => {
       form.setFieldError(e.target.name, "")
@@ -65,6 +75,17 @@ function SignInForm()
          </Button>
       </form>
    )
+}
+
+const renderRoleSelect = () => {
+   return roleSelectData.map((option, index) => (
+      <MenuItem key={index} value={option.value}>
+         <Chip
+            className={"user-info--top__role"} label={option.value}
+            color={option.color} variant="outlined" size={"small"}
+         />
+      </MenuItem>
+   ))
 }
 
 const roleSelectData = Object.values(Roles).map((role, index) => ({
