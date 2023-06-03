@@ -1,7 +1,7 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {RootState, useRootDispatch} from "../../../stores/RootStore";
 import {useSelector} from "react-redux";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo} from "react";
 import {fetchUserList} from "../../../stores/UserTableStore";
 import {TableToolBar} from "../inputs";
 
