@@ -1,8 +1,13 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Autocomplete, TextField} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Autocomplete, TextField, SelectChangeEvent} from "@mui/material";
 import {RootState, useRootDispatch} from "../../../../stores/RootStore";
 import {useSelector} from "react-redux";
-import {useEffect, useMemo, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import {fetchPlannerContractList} from "../../../../stores/ContractTableStore";
+import {fetchUserList} from "../../../../stores/UserTableStore";
+import {useFormik} from "formik";
+import {CreateWithDrawRequest} from "../../../../api_schema";
+import * as Yup from "yup";
+import {MyAxios} from "../../../../infrastructures";
 
 type CreateWithDrawFormDialogProps = {
    isOpen?: boolean
@@ -13,7 +18,40 @@ function CreateWithDrawFormDialog(props: CreateWithDrawFormDialogProps)
 {
    const dispatch = useRootDispatch()
    const {contractList} = useSelector((state: RootState) => state.ContractTableSlice)
-   const [contractSelectData, setContractSelectData] = useState<{label: string, UniqueName: string}[] | null>([])
+   const {userList} = useSelector((state: RootState) => state.UserTableSlice)
+   const [contractSelectData, setContractSelectData] = useState<contractSelectType[] | null>([])
+   const [contractorSelectData, setContractorSelectData] = useState<contractorSelectType[] | null>([])
+
+   const form = useFormik<{Contract: contractSelectType | null, Contractor: contractorSelectType | null, CableAmount: number}>({
+      initialValues: {
+         Contract: null,
+         Contractor: null,
+         CableAmount: 1
+      },
+      validateOnChange: false,
+      validateOnBlur: true,
+      validationSchema: CreateWithDrawFormValidation,
+      onSubmit: values => {
+         const body: CreateWithDrawRequest = {
+            ContractorEmail: values.Contractor?.Email ?? "",
+            ContractUniqueName: values.Contract?.UniqueName ?? "",
+            CableAmount: values.CableAmount
+         }
+         MyAxios.post("/planner/with-draws", body)
+            .then(res => {
+               console.log(res.data.Payload)
+            })
+            .catch(err => {
+               console.log(err.response)
+            })
+      }
+   })
+   const { values, touched, errors, handleSubmit, handleBlur } = form;
+
+   const handleInputChange = (e: ChangeEvent<any> | SelectChangeEvent) => {
+      form.setFieldError(e.target.name, "")
+      form.handleChange(e)
+   };
 
    useEffect(() => {
       if (contractList == null) dispatch(fetchPlannerContractList())
@@ -25,6 +63,21 @@ function CreateWithDrawFormDialog(props: CreateWithDrawFormDialogProps)
       }) ?? null)
    }, [dispatch, contractList])
 
+   useEffect(() => {
+      if (userList == null) dispatch(fetchUserList("supplier,contractor"))
+      setContractorSelectData(userList?.reduce((result, user) => {
+         if (user.Role === "contractor" && user.IsActive) {
+            result.push({
+               label: user.Email,
+               Email: user.Email
+            })
+         }
+         return result
+      }, [] as {label: string, Email: string}[]) ?? [])
+
+   }, [dispatch, userList])
+
+   // TODO: those lines look like shoot, refactor them
    return (
       <Dialog
          maxWidth={"xs"}
@@ -33,29 +86,56 @@ function CreateWithDrawFormDialog(props: CreateWithDrawFormDialogProps)
          onClose={props.handleClose}
       >
          <DialogTitle>Create New Request</DialogTitle>
+
          <DialogContent>
             <Autocomplete
                fullWidth
                options={contractSelectData ?? []}
-               renderInput={(params) => <TextField {...params} margin={"normal"} label="Contract" />}
+               onBlur={handleBlur('Contract')}
+               onChange={(_, value) => {
+                  form.setFieldError("Contract", "")
+                  form.setFieldValue("Contract", value)
+               }}
+               value={values.Contract}
+               renderInput={(params) =>
+                  <TextField {...params}
+                    onBlur={handleBlur('Contract')}
+                    name={"Contract"} id={"Contract"}
+                    helperText={touched.Contract && errors.Contract}
+                    error={!!(touched.Contract && errors.Contract)}
+                    margin={"normal"} label="Contract" />}
             />
             <Autocomplete
                fullWidth
-               options={top100Films}
-               renderInput={(params) => <TextField {...params} margin={"normal"} label="Supplier" />}
+               options={contractorSelectData ?? []}
+               onBlur={handleBlur('Contractor')}
+               onChange={(_, value) => {
+                  form.setFieldError("Contractor", "")
+                  form.setFieldValue("Contractor", value)
+               }}
+               value={values.Contractor}
+               renderInput={(params) =>
+                  <TextField {...params}
+                     onBlur={handleBlur('Contractor')}
+                     name={"Contractor"} id={"Contractor"}
+                     helperText={touched.Contractor && errors.Contractor}
+                     error={!!(touched.Contractor && errors.Contractor)}
+                     margin={"normal"} label="Contractor" />}
             />
             <TextField
-               margin={"normal"}
-               fullWidth
-               type={"number"}
-               label={"CableAmount"}
+               error={!!(touched.CableAmount && errors.CableAmount)}
+               helperText={touched.CableAmount && errors.CableAmount}
+               name={"CableAmount"} value={values.CableAmount}
+               onBlur={handleBlur} onChange={handleInputChange}
+               margin={"normal"} fullWidth type={"number"} label={"CableAmount"}
             />
          </DialogContent>
+
          <DialogActions>
             <Button onClick={props.handleClose} color="secondary">
                Cancel
             </Button>
-            <Button color="primary">
+            <Button onClick={() => handleSubmit()} color="primary">
                Submit
             </Button>
          </DialogActions>
@@ -63,9 +143,19 @@ function CreateWithDrawFormDialog(props: CreateWithDrawFormDialogProps)
    )
 }
 
-export default CreateWithDrawFormDialog
+const CreateWithDrawFormValidation = Yup.object().shape({
+   CableAmount: Yup.number().min(1, "amount is invalid").required('amount is required'),
+   Contract: Yup.object().required().shape({
+      label: Yup.string().required('label is required'),
+      UniqueName: Yup.string().required('Contract is required'),
+   }),
+   Contractor: Yup.object().required().shape({
+      label: Yup.string().required(`label is required`),
+      Email: Yup.string().email(`contractor is required`)
+   })
+});
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [
-   'contract-1',
-]
+type contractSelectType = {label: string, UniqueName: string}
+type contractorSelectType = {label: string, Email: string}
+
+export default CreateWithDrawFormDialog
