@@ -1,5 +1,7 @@
 import Logo from "./Logo"
+import UserTable from "./UserTable"
 
 export {
-   Logo
+   Logo,
+   UserTable
 }
