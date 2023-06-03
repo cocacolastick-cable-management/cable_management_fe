@@ -4,7 +4,8 @@ import {TabNav, TabRouteType} from "../../base_components";
 import {WithDrawTable} from "./with_draw";
 import NotifSection from "./NotifSection";
 import {ContractTable} from "./contract";
-import {SupplierTable} from "./supplier";
+import {UserTable} from "../../components";
+import {Roles} from "../../../constants";
 
 function PlannerDashBoardPage()
 {
@@ -37,12 +38,12 @@ const initRoutesState: TabRouteType[] = [
    },
    {
       label: "SUPPLIERS",
-      element: <SupplierTable/>,
+      element: <UserTable role={Roles.supplier.value}/>,
       // isClosable:
    },
    {
       label: "CONTRACTORS",
-      element: "xin chao",
+      element: <UserTable role={Roles.contractor.value}/>,
       // isClosable:
    }
 ]
