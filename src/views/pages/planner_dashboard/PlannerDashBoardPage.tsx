@@ -13,6 +13,7 @@ function PlannerDashBoardPage()
 
    return (
       <TableLayout
+         sideBar={null}
          name={"PLANNER DASHBOARD"}
          table={<TabNav routes={routes}/>}
       />
