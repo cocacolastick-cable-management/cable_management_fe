@@ -25,7 +25,7 @@ function CreateUserFormDialog(props: CreateUserFormDialogProps)
       onSubmit: values => {
          MyAxios.post("/admin/users", values)
             .then((res) => {
-               console.log(res.data)
+               console.log(res.data.Payload)
             })
             .catch((error) => {
                console.log(error.response)
@@ -47,34 +47,30 @@ function CreateUserFormDialog(props: CreateUserFormDialogProps)
          onClose={props.handleClose}
       >
          <DialogTitle>Create New Account</DialogTitle>
+
          <DialogContent>
             <Select
-               fullWidth
-               margin="normal"
+               fullWidth margin="normal"
                error={!!(touched.Role && errors.Role)}
                helperText={touched.Role && errors.Role}
                name={"Role"} value={values.Role}
                onChange={handleInputChange} onBlur={handleBlur}
-               renderOptions={renderRoleSelect}
-               label={"Role"} required/>
+               renderOptions={renderRoleSelect} label={"Role"} required/>
             <TextField
-               sx={{ width: '100%' }}
-               fullWidth
-               margin="normal"
+               sx={{ width: '100%' }} fullWidth margin="normal"
                error={!!(touched.Email && errors.Email)}
                helperText={touched.Email && errors.Email}
                label={"Email"} name={"Email"} value={values.Email}
                onBlur={handleBlur} onChange={handleInputChange}
                type={"email"} required/>
             <TextField
-               sx={{ width: '100%' }}
-               fullWidth
-               margin="normal"
+               sx={{ width: '100%' }} fullWidth margin="normal"
                error={!!(touched.DisplayName && errors.DisplayName)}
                helperText={touched.DisplayName && errors.DisplayName}
                label={"DisplayName"} name={"DisplayName"} value={values.DisplayName}
                onBlur={handleBlur} onChange={handleInputChange} required/>
          </DialogContent>
+
          <DialogActions>
             <Button onClick={props.handleClose} color="secondary">
                Cancel
