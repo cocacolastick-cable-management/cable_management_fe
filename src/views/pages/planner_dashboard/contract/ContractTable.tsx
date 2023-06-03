@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import {useEffect, useMemo} from "react";
 import {fetchPlannerContractList} from "../../../../stores/ContractTableStore";
 import {formatFriendlyDatetime} from "../../../../utils";
+import {TableToolBar} from "../../../components";
 
 const columns: GridColDef[] = [
    { field: 'Serial', headerName: 'Serial', flex: 0.05},
@@ -35,7 +36,7 @@ function ContractTable()
             loading={status === "pending"}
             // onRowSelectionModelChange={handleRowSelectionChange}
             density={"standard"} columns={columns} rows={rows ?? []}
-            // slots={{ toolbar:  }}
+            slots={{ toolbar: TableToolBar }}
          />
       </div>
    )
