@@ -20,11 +20,11 @@ function UserTable()
    const {userList, status} = useSelector((state: RootState) => state.UserTableSlice)
 
    useEffect(() => {
-      dispatch(fetchUserList())
-   }, [dispatch])
+      if (userList === null) dispatch(fetchUserList("admin,planner,supplier,contractor"))
+   }, [userList, dispatch])
 
    const rows = useMemo(() => {
-      return userList.map((user, index) => (
+      return userList?.map((user, index) => (
          {id: user.Id, Serial: index + 1, Role: user.Role, Name: user.DisplayName, Email: user.Email, Status: user.IsActive ? "active" : "disable"}
       ))
    }, [userList])
@@ -38,8 +38,9 @@ function UserTable()
          <DataGrid
             loading={status === "pending"}
             onRowSelectionModelChange={handleRowSelectionChange}
-            density={"standard"} rows={rows} columns={columns}
-            slots={{ toolbar: UserTableToolBar }}/>
+            density={"standard"} rows={rows ?? []} columns={columns}
+            slots={{ toolbar: UserTableToolBar }}
+         />
       </div>
    );
 }
