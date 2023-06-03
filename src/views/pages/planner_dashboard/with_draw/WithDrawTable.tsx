@@ -5,15 +5,16 @@ import {useEffect, useMemo} from "react";
 import {fetchPlannerWithDrawList} from "../../../../stores/WithDrawTableStore";
 import {GridRowSelectionModel} from "@mui/x-data-grid/models/gridRowSelectionModel";
 import WithDrawTableToolBar from "./WithDrawTableToolBar";
-import formatFriendlyDatetime from "../../../../utils/formatFriendlyDatetime";
+import {formatFriendlyDatetime} from "../../../../utils";
 
 const columns: GridColDef[] = [
    { field: 'Serial', headerName: 'Serial', flex: 0.05},
+   { field: 'ContractName', headerName: 'ContractName', flex: 0.15},
    { field: 'Status', headerName: 'Status', flex: 0.1},
    { field: 'CableAmount', headerName: 'CableAmount', flex: 0.1},
-   { field: 'SupplierEmail', headerName: 'SupplierEmail', flex: 0.25},
-   { field: 'ContractorEmail', headerName: 'ContractorEmail', flex: 0.25},
-   { field: 'CreatedAt', headerName: 'CreatedAt', flex: 0.25},
+   { field: 'SupplierEmail', headerName: 'SupplierEmail', flex: 0.225},
+   { field: 'ContractorEmail', headerName: 'ContractorEmail', flex: 0.225},
+   { field: 'CreatedAt', headerName: 'CreatedAt', flex: 0.15},
 ];
 
 function WithDrawTable()
@@ -30,6 +31,7 @@ function WithDrawTable()
          return {
             id: withDraw.Id,
             Serial: index + 1,
+            ContractName: "okay",
             Status: withDraw.Status,
             CableAmount: withDraw.CableAmount,
             SupplierEmail: withDraw.SupplierEmail,
@@ -41,6 +43,7 @@ function WithDrawTable()
    
    const handleRowSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
       // dispatch(setSelectedUser({id: rowSelectionModel[0] as string}))
+      console.log(rowSelectionModel[0])
    }
 
    return (
