@@ -8,7 +8,7 @@ function formatFriendlyDatetime(datetime: Date): string
    const secondsAbs = Math.abs(seconds)
 
    if (secondsAbs < 60) {
-      return `${seconds} seconds ${seconds < 0 ? "ago" : "from now"}`;
+      return `${secondsAbs} seconds ${seconds < 0 ? "ago" : "from now"}`;
    } else if (secondsAbs < 3600) {
       const minutes = Math.floor(secondsAbs / 60);
       return `${minutes} minutes ${seconds < 0 ? "ago" : "from now"}`;
@@ -17,8 +17,8 @@ function formatFriendlyDatetime(datetime: Date): string
       return `${hours} hours ${seconds < 0 ? "ago" : "from now"}`;
    } else {
       const days = Math.floor(secondsAbs / 86400);
-      return `${days} days ${days < 0 ? "ago" : "from now"}`;
+      return `${days} days ${seconds < 0 ? "ago" : "from now"}`;
    }
 }
 
-export default formatFriendlyDatetime
+export {formatFriendlyDatetime}
