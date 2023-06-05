@@ -4,13 +4,15 @@ import AuthReducer from "./AuthStore";
 import UserTableReducer from "./UserTableStore";
 import WithDrawTableReducer from "./WithDrawTableStore";
 import ContractTableStore from "./ContractTableStore";
+import PlannerDashBoardStore from "./PlannerDashBoardStore";
 
 const RootStore = configureStore({
    reducer: {
       AuthSlice: AuthReducer,
       UserTableSlice: UserTableReducer,
       WithDrawTableSlice: WithDrawTableReducer,
-      ContractTableSlice: ContractTableStore
+      ContractTableSlice: ContractTableStore,
+      PlannerDashBoardSlice: PlannerDashBoardStore
    },
 })
 

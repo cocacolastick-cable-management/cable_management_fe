@@ -1,5 +1,14 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom"
-import {AdminDashBoardPage, DashBoardLayout, PrivateRouteLayout, RootLayout, SignInPage, PlannerDashBoardPage} from "../views"
+import {
+   AdminDashBoardPage,
+   DashBoardLayout,
+   PrivateRouteLayout,
+   RootLayout,
+   SignInPage,
+   PlannerDashBoardPage,
+   SupplierDashBoardPage,
+   ContractorDashBoardPage
+} from "../views"
 
 function RootRouter()
 {
@@ -23,12 +32,12 @@ function RootRouter()
                   </Route>
 
                   <Route path={"supplier"} element={<DashBoardLayout/>}>
-
+                     <Route path={"dashboard"} element={<SupplierDashBoardPage/>} />
                   </Route>
 
                   <Route path={"contractor"} element={<DashBoardLayout/>}>
-
-               </Route>
+                     <Route path={"dashboard"} element={<ContractorDashBoardPage/>} />
+                  </Route>
 
                </Route>
 

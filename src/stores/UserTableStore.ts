@@ -17,7 +17,9 @@ const initialState: UserTableStateType = {
 const fetchUserList = createAsyncThunk("UserTableSlice/fetchUserList", async (roles: string) => {
    try {
       const res = await MyAxios.get("/common/users", {params: {roles: roles} })
-      return res.data.Payload as UserResponse[]
+      // TODO this should be written at backend
+      return (res.data.Payload as UserResponse[])
+         .sort((a, b) => ((new Date(b.CreatedAt)).getTime() - (new Date(a.CreatedAt)).getTime()))
    } catch (err) {
       console.error(err)
    }
@@ -29,6 +31,14 @@ const UserTableSlice = createSlice(({
    reducers: {
       setSelectedUser(state, action: PayloadAction<{id: string}>) {
          state.selectedUser = state.userList?.find((user) => user.Id === action.payload.id) ?? null
+      },
+      clearUserTableStore: (state) => {
+         state.status = initialState.status
+         state.selectedUser = initialState.selectedUser
+         state.userList = initialState.userList
+      },
+      addUserToHead: (state, action: PayloadAction<UserResponse>) => {
+         state.userList = [action.payload, ...(state.userList ?? [])]
       }
    },
    extraReducers: (builder) => {
@@ -45,5 +55,5 @@ const UserTableSlice = createSlice(({
 
 export {UserTableSlice}
 export {fetchUserList}
-export const {setSelectedUser} = UserTableSlice.actions
+export const {setSelectedUser, clearUserTableStore, addUserToHead} = UserTableSlice.actions
 export default UserTableSlice.reducer

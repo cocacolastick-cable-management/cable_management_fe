@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {MyAxios} from "../infrastructures";
 import {ContractResponse} from "../api_schema";
 
@@ -17,7 +17,20 @@ const initialState: ContractTableStateType = {
 const fetchPlannerContractList = createAsyncThunk("ContractTableSlice/fetchPlannerContractList", async () => {
    try {
       const res = await MyAxios.get("/planner/contracts")
-      return res.data.Payload as ContractResponse[]
+      // TODO this should be written at backend
+      return (res.data.Payload as ContractResponse[])
+         .sort((a, b) => ((new Date(b.CreatedAt)).getTime() - (new Date(a.CreatedAt)).getTime()))
+   } catch (err) {
+      console.error(err)
+   }
+})
+
+const fetchSupplierContractList = createAsyncThunk("ContractTableSlice/fetchSupplierContractList", async () => {
+   try {
+      const res = await MyAxios.get("/supplier/contracts")
+      // TODO this should be written at backend
+      return (res.data.Payload as ContractResponse[])
+         .sort((a, b) => ((new Date(b.CreatedAt)).getTime() - (new Date(a.CreatedAt)).getTime()))
    } catch (err) {
       console.error(err)
    }
@@ -26,7 +39,23 @@ const fetchPlannerContractList = createAsyncThunk("ContractTableSlice/fetchPlann
 const ContractTableSlice = createSlice({
    name: "ContractTableSlice",
    initialState,
-   reducers: {},
+   reducers: {
+      addUpContractStockById: (state, action: PayloadAction<{id: string, stock: number}>) => {
+         const index = state.contractList?.findIndex((contract) => {
+            return contract.Id === action.payload.id
+         })
+         if (index !== undefined && index >= 0) {
+            const newContractList = [...state.contractList!]
+            newContractList[index].Stock = newContractList[index].Stock + action.payload.stock
+            state.contractList = newContractList
+         }
+      },
+      clearContractTableStore: (state) => {
+         state.contractList = initialState.contractList
+         state.selectedWithDraw = initialState.selectedWithDraw
+         state.status = initialState.status
+      }
+   },
    extraReducers: builder => {
       builder
          .addCase(fetchPlannerContractList.pending, (state) => {
@@ -36,10 +65,18 @@ const ContractTableSlice = createSlice({
             state.status = "succeeded"
             state.contractList = action.payload ?? []
          })
+      builder
+         .addCase(fetchSupplierContractList.pending, (state) => {
+            state.status = "pending"
+         })
+         .addCase(fetchSupplierContractList.fulfilled, (state, action) => {
+            state.status = "succeeded"
+            state.contractList = action.payload ?? []
+         })
    }
 })
 
 export {ContractTableSlice}
-export {fetchPlannerContractList}
-export const {} = ContractTableSlice.actions
+export {fetchPlannerContractList, fetchSupplierContractList}
+export const {addUpContractStockById, clearContractTableStore} = ContractTableSlice.actions
 export default ContractTableSlice.reducer

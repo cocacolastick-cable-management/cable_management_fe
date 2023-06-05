@@ -1,18 +1,38 @@
 import {Fade, IconButton, Menu, MenuItem} from "@mui/material"
 import {MouseEvent, useState} from "react"
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined'
+import Logout from '@mui/icons-material/Logout'
+import {useDispatch} from "react-redux";
+import {clearAuthData} from "../../../stores/AuthStore";
+import {useNavigate} from "react-router-dom";
+import {clearPlannerDashBoardSlice} from "../../../stores/PlannerDashBoardStore";
+import {clearWithDrawTableStore} from "../../../stores/WithDrawTableStore";
+import {clearContractTableStore} from "../../../stores/ContractTableStore";
+import {clearUserTableStore} from "../../../stores/UserTableStore";
 
 function HeaderMenu()
 {
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
 
    const handleClick = (event: MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
    };
 
-   const handleClose = () => {
+   const handleClose = (event: MouseEvent<HTMLElement>) => {
       setAnchorEl(null);
+   };
+
+   const handleLogout = () => {
+      dispatch(clearPlannerDashBoardSlice())
+      dispatch(clearWithDrawTableStore())
+      dispatch(clearContractTableStore())
+      dispatch(clearAuthData())
+      dispatch(clearUserTableStore())
+      setAnchorEl(null);
+      navigate("/sign-in", {replace: true})
    };
 
    return (
@@ -36,9 +56,7 @@ function HeaderMenu()
             onClose={handleClose}
             TransitionComponent={Fade}
          >
-            <MenuItem onClick={handleClose}>xxx</MenuItem>
-            <MenuItem onClick={handleClose}>yyy</MenuItem>
-            <MenuItem onClick={handleClose}>zzz</MenuItem>
+            <MenuItem onClick={handleLogout}><Logout/> <p className={"ml-3"}>Logout</p></MenuItem>
          </Menu>
       </section>
    );

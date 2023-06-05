@@ -12,15 +12,16 @@ type TabRouteType = {
 
 type TabNavProps = {
    routes: TabRouteType[]
+   onTabChange?: () => void
 }
 
 function TabNav(props: TabNavProps)
 {
    const [tab, setTab] = useState(0);
 
-   // const routes = useMemo(() => props.routes, [props.routes])
-
    const handleChange = (event: SyntheticEvent, newValue: number) => {
+      console.log("tab change")
+      props.onTabChange && props.onTabChange()
       setTab(newValue);
    };
 

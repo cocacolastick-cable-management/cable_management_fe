@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik"
 import {AuthResponse, SignInRequest, SignInRequestValidation} from "../../../api_schema"
 import {MyAxios} from "../../../infrastructures"
-import {setAuthData} from "../../../stores/AuthStore";
+import {localAuthDataKey, setAuthData} from "../../../stores/AuthStore";
 import {useDispatch} from "react-redux";
 
 function SignInForm()
@@ -66,7 +66,7 @@ function SignInForm()
          <TextField
             error={!!(touched.Password && errors.Password)}
             helperText={touched.Password && errors.Password}
-            name={"Password"} value={values.Password}
+            name={"Password"} value={values.Password} type={"password"}
             onBlur={handleBlur} onChange={handleInputChange} label={"Password"} required/>
          <Button
             onClick={() => handleSubmit()}
