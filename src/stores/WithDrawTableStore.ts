@@ -36,6 +36,18 @@ const fetchSupplierWithDrawList = createAsyncThunk("fetchSupplierWithDrawList/fe
    }
 })
 
+const fetchContractorWithDrawList = createAsyncThunk("fetchContractorWithDrawList/fetchPlannerWithDrawList", async () => {
+   try {
+      const res = await MyAxios.get("/contractor/with-draws")
+      // TODO this should be written at backend
+      return (res.data.Payload as WithDrawResponse[])
+         .sort((a, b) => ((new Date(b.CreatedAt)).getTime() - (new Date(a.CreatedAt)).getTime()))
+   } catch (err) {
+      console.error(err)
+   }
+})
+
+
 const WithDrawTableSlice = createSlice({
    name: "WithDrawTableSlice",
    initialState,
@@ -51,10 +63,26 @@ const WithDrawTableSlice = createSlice({
             state.status = "succeeded"
             state.withDrawList = action.payload ?? []
          })
+      builder
+         .addCase(fetchSupplierWithDrawList.pending, (state) => {
+            state.status = "pending"
+         })
+         .addCase(fetchSupplierWithDrawList.fulfilled, (state, action) => {
+            state.status = "succeeded"
+            state.withDrawList = action.payload ?? []
+         })
+      builder
+         .addCase(fetchContractorWithDrawList.pending, (state) => {
+            state.status = "pending"
+         })
+         .addCase(fetchContractorWithDrawList.fulfilled, (state, action) => {
+            state.status = "succeeded"
+            state.withDrawList = action.payload ?? []
+         })
    }
 })
 
 export {WithDrawTableSlice}
-export {fetchPlannerWithDrawList}
-export const {} = WithDrawTableSlice.actions
+export {fetchPlannerWithDrawList, fetchSupplierWithDrawList, fetchContractorWithDrawList}
+export const {updateWithDrawById, addWithDrawToHead, clearWithDrawTableStore} = WithDrawTableSlice.actions
 export default WithDrawTableSlice.reducer
