@@ -5,6 +5,8 @@ import {Select} from "../../base_components";
 import {useFormik} from "formik";
 import {CreateUserRequest, CreateUserRequestValidation} from "../../../api_schema";
 import {MyAxios} from "../../../infrastructures";
+import {useDispatch} from "react-redux";
+import {addUserToHead} from "../../../stores/UserTableStore";
 
 type CreateUserFormDialogProps = {
    isOpen?: boolean
@@ -13,6 +15,7 @@ type CreateUserFormDialogProps = {
 
 function CreateUserFormDialog(props: CreateUserFormDialogProps)
 {
+   const dispatch = useDispatch()
    const form = useFormik<CreateUserRequest>({
       initialValues: {
          Role: "",
@@ -25,10 +28,20 @@ function CreateUserFormDialog(props: CreateUserFormDialogProps)
       onSubmit: values => {
          MyAxios.post("/admin/users", values)
             .then((res) => {
-               console.log(res.data.Payload)
+               dispatch(addUserToHead(res.data.Payload))
+               form.resetForm()
+               props.handleClose && props.handleClose()
             })
-            .catch((error) => {
-               console.log(error.response)
+            .catch((err) => {
+               const code = err.response.data.Code
+               if (code === "IVL") {
+                  const errorsRes = err.response.data.Errors as any[]
+                  errorsRes.forEach((error) => {
+                     console.log(error)
+                     form.setFieldTouched(error.FailedField, true, false)
+                     form.setFieldError(error.FailedField, error.Value)
+                  })
+               }
             })
       }
    })
