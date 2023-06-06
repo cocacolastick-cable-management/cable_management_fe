@@ -7,11 +7,10 @@ interface AuthStateType {
 }
 
 const localAuthDataKey = "localAuthDataKey"
-
-const authData: AuthResponse = JSON.parse(localStorage.getItem(localAuthDataKey)!)
+const authData = JSON.parse(localStorage.getItem(localAuthDataKey)!)
 
 const initialState: AuthStateType = {
-   authData: authData ?? {
+   authData: authData as AuthResponse ?? {
       Role: null,
       Name: "",
       Email: "",
@@ -31,7 +30,8 @@ const AuthSlice = createSlice({
       },
       clearAuthData: (state) => {
          state.authData = initialState.authData
-         state.authData = initialState.authData
+         state.isAuth = false
+         localStorage.removeItem(localAuthDataKey)
       },
       fetchAuthDataFromLocal: (state) => {
          state.authData = JSON.parse(localStorage.getItem(localAuthDataKey)!) as AuthResponse
