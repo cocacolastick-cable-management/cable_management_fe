@@ -20,20 +20,20 @@ MyAxios.interceptors.request.use(
       return config
    }
 )
-//
-// MyAxios.interceptors.response.use(
-//    (response) => response,
-//    (error) => {
-//       if (error.response.config.url === "/common/sign-in") {
-//          return Promise.reject(error)
-//       }
-//
-//       if (error.response.status === 401 || error.response.status === 403) {
-//          window.location.href = '/sign-in';
-//       }
-//
-//       return Promise.reject(error)
-//    }
-// )
+
+MyAxios.interceptors.response.use(
+   (response) => response,
+   (error) => {
+      if (error.response.config.url === "/common/sign-in") {
+         return Promise.reject(error)
+      }
+
+      if (error.response.status === 401 || error.response.status === 403) {
+         window.location.href = '/sign-in';
+      }
+
+      return Promise.reject(error)
+   }
+)
 
 export default MyAxios
