@@ -1,4 +1,5 @@
 import WithDrawHistoryResponse from "./WithDrawHistoryResponse";
+import {KeyOfWithDrawStatus} from "../../constants";
 
 type WithDrawResponse = {
    Id: string
@@ -9,8 +10,9 @@ type WithDrawResponse = {
    ContractorName: string
    ContractorEmail: string
    ContractId: string
+   ContractUniqueName: string
    CableAmount: number
-   Status: string
+   Status: KeyOfWithDrawStatus
    CreatedAt: Date
    Histories: WithDrawHistoryResponse[]
 }
