@@ -9,6 +9,7 @@ import {clearPlannerDashBoardSlice} from "../../../stores/PlannerDashBoardStore"
 import {clearWithDrawTableStore} from "../../../stores/WithDrawTableStore";
 import {clearContractTableStore} from "../../../stores/ContractTableStore";
 import {clearUserTableStore} from "../../../stores/UserTableStore";
+import {clearNotifSlice} from "../../../stores/NotifStore";
 
 function HeaderMenu()
 {
@@ -31,6 +32,7 @@ function HeaderMenu()
       dispatch(clearContractTableStore())
       dispatch(clearAuthData())
       dispatch(clearUserTableStore())
+      dispatch(clearNotifSlice())
       setAnchorEl(null);
       navigate("/sign-in", {replace: true})
    };
