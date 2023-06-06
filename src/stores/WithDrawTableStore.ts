@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {MyAxios} from "../infrastructures";
 import {WithDrawResponse} from "../api_schema";
 
@@ -52,7 +52,24 @@ const WithDrawTableSlice = createSlice({
    name: "WithDrawTableSlice",
    initialState,
    reducers: {
-
+      updateWithDrawById: (state, action: PayloadAction<{id: string, withDraw: WithDrawResponse}>) => {
+         const index = state.withDrawList?.findIndex((withDraw) => {
+            return withDraw.Id === action.payload.id
+         })
+         if (index !== undefined && index >= 0) {
+            const newWithDrawList = [...state.withDrawList!]
+            newWithDrawList[index] = action.payload.withDraw
+            state.withDrawList = newWithDrawList
+         }
+      },
+      addWithDrawToHead: (state, action: PayloadAction<WithDrawResponse>) => {
+         state.withDrawList = state.withDrawList ? [action.payload, ...state.withDrawList] : [action.payload]
+      },
+      clearWithDrawTableStore: (state) => {
+         state.withDrawList = initialState.withDrawList
+         state.selectedWithDraw = initialState.selectedWithDraw
+         state.status = initialState.status
+      }
    },
    extraReducers: builder => {
       builder
