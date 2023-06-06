@@ -2,9 +2,7 @@ import {TableLayout} from "../../layouts/table"
 import {ReactNode, useEffect, useState} from "react"
 import {TabNav, TabRouteType} from "../../base_components";
 import {WithDrawPreview, WithDrawTable} from "./with_draw";
-import NotifSection from "./NotifSection";
-import {ContractTable} from "../../components"
-import {UserTable} from "../../components";
+import {ContractTable, NotifSection, UserTable} from "../../components"
 import {Roles} from "../../../constants";
 import {RootState} from "../../../stores/RootStore";
 import {useDispatch, useSelector} from "react-redux";
@@ -21,7 +19,7 @@ function PlannerDashBoardPage()
 
    useEffect(() => {
       if (selectedWithDraw) setPreviewUI(<WithDrawPreview data={selectedWithDraw}/>)
-   }, [selectedWithDraw])
+   }, [selectedWithDraw, selectedWithDraw?.Id])
 
    // useEffect(() => {
    //    if (selectedContract) setPreviewUI(<ContractPreview/>)
