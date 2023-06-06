@@ -4,8 +4,7 @@ import WithDrawPreview from "./WithDrawPreview";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../stores/RootStore";
 import {TabNav, TabRouteType} from "../../base_components";
-import NotifSection from "../planner_dashboard/NotifSection";
-import {ContractTable, WithDrawTable} from "../../components";
+import {ContractTable, NotifSection, WithDrawTable} from "../../components";
 import {setSelectedContract} from "../../../stores/PlannerDashBoardStore";
 
 function SupplierDashBoardPage()
@@ -15,7 +14,6 @@ function SupplierDashBoardPage()
    const [previewUI, setPreviewUI] = useState<ReactNode>(null)
 
    useEffect(() => {
-      console.log(setSelectedContract)
       if (selectedWithDraw) setPreviewUI(<WithDrawPreview data={selectedWithDraw}/>)
       else setPreviewUI(null)
    }, [selectedWithDraw])

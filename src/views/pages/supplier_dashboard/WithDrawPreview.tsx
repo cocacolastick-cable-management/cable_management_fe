@@ -1,6 +1,6 @@
 import {WithDrawResponse} from "../../../api_schema";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Roles, WithDrawStatus} from "../../../constants";
 import {Button} from "@mui/material";
 import {ConfirmDialog} from "../../base_components";
@@ -21,33 +21,10 @@ function WithDrawPreview(props: WithDrawPreviewProps)
 {
    const dispatch = useDispatch()
    const {authData} = useSelector((state: RootState) => state.AuthSlice)
+   // const {authData} = useSelector((state: RootState) => state.PlannerDashBoardSlice)
    const [open, setOpen] = useState(false);
    const [submitBtnState, setSubmitBtnState] = useState<any>({})
-   const [withDrawId, setWithDrawId] = useState(props.data.Id)
-
-   const handleClickOpen = () => {
-      setOpen(true);
-   };
-
-   const handleClose = () => {
-      setOpen(false);
-   };
-
-   const handleConfirmReady = () => {
-      const data: UpdateWithDrawStatusRequest = {
-         NewStatus: "ready"
-      }
-      handleUpdateWithDrawStatus(data)
-      setOpen(false);
-   }
-
-   const handleConfirmCollected = () => {
-      const data: UpdateWithDrawStatusRequest = {
-         NewStatus: "collected"
-      }
-      handleUpdateWithDrawStatus(data)
-      setOpen(false);
-   }
+   const [withDrawId, setWithDrawId] = useState('')
 
    useEffect(() => {
       if (authData.Role === "supplier") {
@@ -64,13 +41,43 @@ function WithDrawPreview(props: WithDrawPreviewProps)
    }, [authData.Role])
 
    useEffect(() => {
-     setWithDrawId(props.data.Id)
+      setWithDrawId(props.data.Id)
    }, [props.data.Id])
 
-   const handleUpdateWithDrawStatus = (data: UpdateWithDrawStatusRequest) => {
-      console.log(withDrawId)
+   const handleClickOpen = () => {
+      setOpen(true);
+   };
+
+   const handleClose = () => {
+      setOpen(false);
+   };
+
+   const handleConfirmReady = () => {
+      const data: UpdateWithDrawStatusRequest = {
+         NewStatus: "ready"
+      }
+      setWithDrawId((pre) => {
+         handleUpdateWithDrawStatus(pre, data)
+         return pre
+      })
+      setOpen(false);
+   }
+
+   const handleConfirmCollected = () => {
+      const data: UpdateWithDrawStatusRequest = {
+         NewStatus: "collected"
+      }
+      setWithDrawId((pre) => {
+         handleUpdateWithDrawStatus(pre, data)
+         return pre
+      })
+      setOpen(false);
+   }
+
+   const handleUpdateWithDrawStatus = (id: string,data: UpdateWithDrawStatusRequest) => {
+      console.log(id)
       // TODO: this code is duplicated, think a way to handle it
-      MyAxios.patch(`/common/with-draws/${withDrawId}`, data)
+      MyAxios.patch(`/common/with-draws/${id}`, data)
          .then((res) => {
             const withDraw = res.data.Payload as WithDrawResponse
             dispatch(setSelectedWithDraw(withDraw))

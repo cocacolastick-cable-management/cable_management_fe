@@ -24,10 +24,15 @@ function WithDrawPreview(props: WithDrawPreviewProps)
 
    const [status, setStatus] = useState(WithDrawStatus[props.data.Status])
    const [open, setOpen] = useState(false);
+   const [withDrawId, setWithDrawId] = useState('')
 
    useEffect(() => {
       setStatus(WithDrawStatus[props.data.Status])
    }, [props.data.Status])
+
+   useEffect(() => {
+      setWithDrawId(props.data.Id)
+   }, [props.data.Id])
 
    const handleClickOpen = () => {
       setOpen(true);
@@ -39,10 +44,11 @@ function WithDrawPreview(props: WithDrawPreviewProps)
 
    const handleCancelWithDraw = () => {
       setOpen(false);
-         const data: UpdateWithDrawStatusRequest = {
-            NewStatus: "canceled"
-         }
-         MyAxios.patch(`/common/with-draws/${props.data.Id}`, data)
+      const data: UpdateWithDrawStatusRequest = {
+         NewStatus: "canceled"
+      }
+      setWithDrawId((pre) => {
+         MyAxios.patch(`/common/with-draws/${pre}`, data)
             .then((res) => {
                const withDraw = res.data.Payload as WithDrawResponse
                dispatch(setSelectedWithDraw(withDraw))
@@ -52,6 +58,8 @@ function WithDrawPreview(props: WithDrawPreviewProps)
             .catch((err) => {
                dispatch(updateWithDrawById({id: props.data.Id, withDraw: err.response.data.Payload}))
             })
+         return pre
+      })
    }
 
    return (

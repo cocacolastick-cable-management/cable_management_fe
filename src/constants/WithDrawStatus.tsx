@@ -18,7 +18,7 @@ const WithDrawStatus = Object.freeze({
    },
    "collected": {
       value: "collected",
-      color: "primary" as ColorType,
+      color: "info" as ColorType,
       icon: <NoCrashIcon fontSize={"small"} />
    },
    "canceled": {

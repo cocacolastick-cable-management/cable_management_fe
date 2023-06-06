@@ -35,7 +35,7 @@
 
    .notif-section
    {
-      @apply h-[670px] ;
+      @apply h-[670px] overflow-auto;
    }
 
    .contract-table

@@ -4,8 +4,7 @@ import {ReactNode, useEffect, useState} from "react";
 import WithDrawPreview from "../supplier_dashboard/WithDrawPreview";
 import {TableLayout} from "../../layouts/table";
 import {TabNav, TabRouteType} from "../../base_components";
-import {WithDrawTable} from "../../components";
-import NotifSection from "../planner_dashboard/NotifSection";
+import {WithDrawTable, NotifSection} from "../../components";
 import {setSelectedContract, setSelectedWithDraw} from "../../../stores/PlannerDashBoardStore";
 
 function ContractorDashBoardPage()

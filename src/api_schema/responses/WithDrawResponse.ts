@@ -3,6 +3,7 @@ import {KeyOfWithDrawStatus} from "../../constants";
 
 type WithDrawResponse = {
    Id: string
+   UniqueName: string
    SupplierId: string
    SupplierName:  string
    SupplierEmail:  string
