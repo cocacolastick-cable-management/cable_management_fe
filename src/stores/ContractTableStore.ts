@@ -31,8 +31,8 @@ const fetchSupplierContractList = createAsyncThunk("ContractTableSlice/fetchSupp
       // TODO this should be written at backend
       return (res.data.Payload as ContractResponse[])
          .sort((a, b) => ((new Date(b.CreatedAt)).getTime() - (new Date(a.CreatedAt)).getTime()))
-   } catch (err) {
-      console.error(err)
+   } catch (exc) {
+      console.error(exc)
    }
 })
 
