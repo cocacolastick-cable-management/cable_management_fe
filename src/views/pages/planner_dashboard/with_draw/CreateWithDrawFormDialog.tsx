@@ -1,13 +1,14 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Autocomplete, TextField, SelectChangeEvent} from "@mui/material";
 import {RootState, useRootDispatch} from "../../../../stores/RootStore";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {ChangeEvent, useEffect, useState} from "react";
-import {fetchPlannerContractList} from "../../../../stores/ContractTableStore";
+import {addUpContractStockById, fetchPlannerContractList} from "../../../../stores/ContractTableStore";
 import {fetchUserList} from "../../../../stores/UserTableStore";
 import {useFormik} from "formik";
-import {CreateWithDrawRequest} from "../../../../api_schema";
+import {CreateWithDrawRequest, WithDrawResponse} from "../../../../api_schema";
 import * as Yup from "yup";
 import {MyAxios} from "../../../../infrastructures";
+import {addWithDrawToHead} from "../../../../stores/WithDrawTableStore";
 
 type CreateWithDrawFormDialogProps = {
    isOpen?: boolean
@@ -16,7 +17,8 @@ type CreateWithDrawFormDialogProps = {
 
 function CreateWithDrawFormDialog(props: CreateWithDrawFormDialogProps)
 {
-   const dispatch = useRootDispatch()
+   const rootDispatch = useRootDispatch()
+   const dispatch = useDispatch()
    const {contractList} = useSelector((state: RootState) => state.ContractTableSlice)
    const {userList} = useSelector((state: RootState) => state.UserTableSlice)
    const [contractSelectData, setContractSelectData] = useState<contractSelectType[] | null>([])
@@ -39,10 +41,22 @@ function CreateWithDrawFormDialog(props: CreateWithDrawFormDialogProps)
          }
          MyAxios.post("/planner/with-draws", body)
             .then(res => {
-               console.log(res.data.Payload)
+               const withDraw = res.data.Payload as WithDrawResponse
+               dispatch(addWithDrawToHead(withDraw))
+               dispatch(addUpContractStockById({id: withDraw.ContractId, stock: -withDraw.CableAmount}))
+               form.resetForm()
+               props.handleClose && props.handleClose()
             })
             .catch(err => {
-               console.log(err.response)
+               const code = err.response.data.Code
+               if (code === "IVL") {
+                  const errorsRes = err.response.data.Errors as any[]
+                  errorsRes.forEach((error) => {
+                     console.log(error)
+                     form.setFieldTouched(error.FailedField, true, false)
+                     form.setFieldError(error.FailedField, error.Value)
+                  })
+               }
             })
       }
    })
@@ -54,17 +68,17 @@ function CreateWithDrawFormDialog(props: CreateWithDrawFormDialogProps)
    };
 
    useEffect(() => {
-      if (contractList == null) dispatch(fetchPlannerContractList())
+      if (contractList == null) rootDispatch(fetchPlannerContractList())
       setContractSelectData(contractList?.map(contract => {
          return {
             label: `${contract.UniqueName} (stock: ${contract.Stock})`,
             UniqueName: contract.UniqueName
          }
       }) ?? null)
-   }, [dispatch, contractList])
+   }, [rootDispatch, contractList])
 
    useEffect(() => {
-      if (userList == null) dispatch(fetchUserList("supplier,contractor"))
+      if (userList == null) rootDispatch(fetchUserList("supplier,contractor"))
       setContractorSelectData(userList?.reduce((result, user) => {
          if (user.Role === "contractor" && user.IsActive) {
             result.push({
@@ -75,7 +89,7 @@ function CreateWithDrawFormDialog(props: CreateWithDrawFormDialogProps)
          return result
       }, [] as {label: string, Email: string}[]) ?? [])
 
-   }, [dispatch, userList])
+   }, [rootDispatch, userList])
 
    // TODO: those lines look like shoot, refactor them
    return (
