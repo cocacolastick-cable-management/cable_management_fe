@@ -17,7 +17,9 @@ const initialState: UserTableStateType = {
 const fetchUserList = createAsyncThunk("UserTableSlice/fetchUserList", async (roles: string) => {
    try {
       const res = await MyAxios.get("/common/users", {params: {roles: roles} })
-      return res.data.Payload as UserResponse[]
+      // TODO this should be written at backend
+      return (res.data.Payload as UserResponse[])
+         .sort((a, b) => ((new Date(b.CreatedAt)).getTime() - (new Date(a.CreatedAt)).getTime()))
    } catch (err) {
       console.error(err)
    }
