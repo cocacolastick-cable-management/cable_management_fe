@@ -1,19 +1,35 @@
 import {TableLayout} from "../../layouts/table"
-import {useState} from "react"
+import {ReactNode, useEffect, useState} from "react"
 import {TabNav, TabRouteType} from "../../base_components";
-import {WithDrawTable} from "./with_draw";
+import {WithDrawPreview, WithDrawTable} from "./with_draw";
 import NotifSection from "./NotifSection";
-import {ContractTable} from "./contract";
+import {ContractTable} from "../../components"
 import {UserTable} from "../../components";
 import {Roles} from "../../../constants";
+import {RootState} from "../../../stores/RootStore";
+import {useDispatch, useSelector} from "react-redux";
+import {setSelectedContract, setSelectedWithDraw} from "../../../stores/PlannerDashBoardStore";
 
 function PlannerDashBoardPage()
 {
-   const [routes, setRoutes] = useState<TabRouteType[]>(initRoutesState)
+   const dispatch = useDispatch()
+   const {selectedWithDraw, selectedContract} = useSelector((state: RootState) => state.PlannerDashBoardSlice)
+
+   // const [routes, setRoutes] = useState<TabRouteType[]>(initRoutesState)
+
+   const [previewUI, setPreviewUI] = useState<ReactNode>(null)
+
+   useEffect(() => {
+      if (selectedWithDraw) setPreviewUI(<WithDrawPreview data={selectedWithDraw}/>)
+   }, [selectedWithDraw])
+
+   // useEffect(() => {
+   //    if (selectedContract) setPreviewUI(<ContractPreview/>)
+   // }, [selectedContract])
 
    return (
       <TableLayout
-         sideBar={null}
+         sideBar={previewUI}
          name={"PLANNER DASHBOARD"}
          table={<TabNav routes={routes}/>}
       />
@@ -21,7 +37,7 @@ function PlannerDashBoardPage()
 }
 
 //TODO should have icon for label
-const initRoutesState: TabRouteType[] = [
+const routes: TabRouteType[] = [
    {
       label: "NOTIFICATIONS",
       element: <NotifSection/>
@@ -38,15 +54,15 @@ const initRoutesState: TabRouteType[] = [
       // isClosable:
    },
    {
+      label: "CONTRACTORS",
+      element: <UserTable role={Roles.contractor.value}/>,
+      // isClosable:
+   },
+   {
       label: "SUPPLIERS",
       element: <UserTable role={Roles.supplier.value}/>,
       // isClosable:
    },
-   {
-      label: "CONTRACTORS",
-      element: <UserTable role={Roles.contractor.value}/>,
-      // isClosable:
-   }
 ]
 
 export default PlannerDashBoardPage
