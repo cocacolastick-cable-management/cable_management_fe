@@ -19,6 +19,7 @@ const supplierColumns: GridColDef[] = [
 
 const contractorColumns: GridColDef[] = [
    { field: 'Serial', headerName: 'Serial', flex: 0.05},
+   { field: 'RequestName', headerName: 'RequestName', flex: 0.15},
    { field: 'ContractName', headerName: 'ContractName', flex: 0.15},
    { field: 'Status', headerName: 'Status', flex: 0.1},
    { field: 'CableAmount', headerName: 'CableAmount', flex: 0.1},
@@ -58,6 +59,7 @@ function WithDrawTable()
          return {
             id: withDraw.Id,
             Serial: index + 1,
+            RequestName: withDraw.UniqueName,
             ContractName: withDraw.ContractUniqueName,
             Status: withDraw.Status,
             CableAmount: withDraw.CableAmount,
