@@ -17,7 +17,20 @@ const initialState: WithDrawTableSateType = {
 const fetchPlannerWithDrawList = createAsyncThunk("WithDrawTableSlice/fetchPlannerWithDrawList", async () => {
    try {
       const res = await MyAxios.get("/planner/with-draws")
-      return res.data.Payload as WithDrawResponse[]
+      // TODO this should be written at backend
+      return (res.data.Payload as WithDrawResponse[])
+         .sort((a, b) => ((new Date(b.CreatedAt)).getTime() - (new Date(a.CreatedAt)).getTime()))
+   } catch (err) {
+      console.error(err)
+   }
+})
+
+const fetchSupplierWithDrawList = createAsyncThunk("fetchSupplierWithDrawList/fetchPlannerWithDrawList", async () => {
+   try {
+      const res = await MyAxios.get("/supplier/with-draws")
+      // TODO this should be written at backend
+      return (res.data.Payload as WithDrawResponse[])
+         .sort((a, b) => ((new Date(b.CreatedAt)).getTime() - (new Date(a.CreatedAt)).getTime()))
    } catch (err) {
       console.error(err)
    }
