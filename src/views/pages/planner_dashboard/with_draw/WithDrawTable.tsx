@@ -1,11 +1,12 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {RootState, useRootDispatch} from "../../../../stores/RootStore";
 import {useSelector} from "react-redux";
-import {useEffect, useMemo} from "react";
+import {useEffect, useState} from "react";
 import {fetchPlannerWithDrawList} from "../../../../stores/WithDrawTableStore";
 import {GridRowSelectionModel} from "@mui/x-data-grid/models/gridRowSelectionModel";
 import WithDrawTableToolBar from "./WithDrawTableToolBar";
 import {formatFriendlyDatetime} from "../../../../utils";
+import {setSelectedWithDraw} from "../../../../stores/PlannerDashBoardStore";
 
 const columns: GridColDef[] = [
    { field: 'Serial', headerName: 'Serial', flex: 0.05},
@@ -21,29 +22,32 @@ function WithDrawTable()
 {
    const dispatch = useRootDispatch()
    const {withDrawList, status} = useSelector((state: RootState) => state.WithDrawTableSlice)
+   const [rows, setRows] = useState<any[]>([])
 
    useEffect(() => {
       if (withDrawList === null) dispatch(fetchPlannerWithDrawList())
    }, [dispatch, withDrawList])
 
-   const rows = useMemo(() => {
-      return withDrawList?.map((withDraw, index) => {
+   useEffect(() => {
+      setRows(withDrawList?.map((withDraw, index) => {
          return {
             id: withDraw.Id,
             Serial: index + 1,
-            ContractName: "okay",
+            ContractName: withDraw.ContractUniqueName,
             Status: withDraw.Status,
             CableAmount: withDraw.CableAmount,
             SupplierEmail: withDraw.SupplierEmail,
             ContractorEmail: withDraw.ContractorEmail,
             CreatedAt: formatFriendlyDatetime(withDraw.CreatedAt)
          }
-      })
+      }) ?? [])
    }, [withDrawList])
    
    const handleRowSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
-      // dispatch(setSelectedUser({id: rowSelectionModel[0] as string}))
-      console.log(rowSelectionModel[0])
+      const withDraw = withDrawList?.find((item) => {
+         return item.Id === rowSelectionModel[0] ? item : null
+      }) ?? null
+      dispatch(setSelectedWithDraw(withDraw))
    }
 
    return (
